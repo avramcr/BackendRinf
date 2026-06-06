@@ -42,7 +42,10 @@ export class ComenziService {
   }
 
   update(id: number, updateComenziDto: UpdateComenziDto) {
-    return `This action updates a #${id} comenzi`;
+    return this.prisma.comanda.update({
+      where: { id },
+      data: updateComenziDto,
+    });
   }
 
   remove(id: number) {
