@@ -36,7 +36,9 @@ export class ComenziService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} comenzi`;
+    return this.prisma.comanda.findUnique({
+      where: { id },
+    });
   }
 
   update(id: number, updateComenziDto: UpdateComenziDto) {
@@ -44,6 +46,8 @@ export class ComenziService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} comenzi`;
+    return this.prisma.comanda.delete({
+      where: { id },
+    });
   }
 }
