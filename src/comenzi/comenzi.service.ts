@@ -99,10 +99,89 @@ export class ComenziService {
       throw new Error('Comanda nu exista');
     }
 
+    if (comanda.status !== StatusComanda.APROBARE_IT) {
+      throw new Error('Comanda nu este in etapa de aprobare IT');
+    }
+
     return this.prisma.comanda.update({
       where: { id },
       data: {
         status: StatusComanda.APROBARE_FINANCIAR,
+      },
+    });
+  }
+
+  async aprobareFinanciar(id: number) {
+    const comanda = await this.prisma.comanda.findUnique({
+      where: { id },
+    });
+
+    if (!comanda) {
+      throw new Error('Comanda nu exista');
+    }
+
+    if (comanda.status !== StatusComanda.APROBARE_FINANCIAR) {
+      throw new Error('Comanda nu este in etapa de aprobare financiara');
+    }
+    return this.prisma.comanda.update({
+      where: { id },
+      data: {
+        status: StatusComanda.FACTURATA,
+      },
+    });
+  }
+
+  async finalizare(id: number) {
+    const comanda = await this.prisma.comanda.findUnique({
+      where: { id },
+    });
+
+    if (!comanda) {
+      throw new Error('Comanda nu exista');
+    }
+
+    if (comanda.status !== StatusComanda.FACTURATA) {
+      throw new Error('Comanda nu este facturata');
+    }
+
+    return this.prisma.comanda.update({
+      where: { id },
+      data: {
+        status: StatusComanda.FINALIZATA,
+      },
+    });
+  }
+
+  async retrimite(id: number) {
+    const comanda = await this.prisma.comanda.findUnique({
+      where: { id },
+    });
+
+    if (!comanda) {
+      throw new Error('Comanda nu exista');
+    }
+
+    if (comanda.status !== StatusComanda.NECESITA_RELUCRARE) {
+      throw new Error('Comanda nu necesita relucrare');
+    }
+
+    let statusNou: StatusComanda;
+
+    if (comanda.suma < 100) {
+      if (comanda.categorie === 'ECHIPAMENTE_IT') {
+        statusNou = StatusComanda.APROBARE_IT;
+      } else {
+        statusNou = StatusComanda.APROBARE_FINANCIAR;
+      }
+    } else {
+      statusNou = StatusComanda.APROBARE_MANAGER;
+    }
+
+    return this.prisma.comanda.update({
+      where: { id },
+      data: {
+        status: statusNou,
+        comentariuRespingere: null,
       },
     });
   }

@@ -58,4 +58,19 @@ export class ComenziController {
   aprobarIt(@Param('id') id: string) {
     return this.comenziService.aprobareIt(+id);
   }
+
+  @Patch(':id/aprobare-financiar')
+  aprobareFinanciar(@Param('id') id: string) {
+    return this.comenziService.aprobareFinanciar(+id);
+  }
+
+  @Patch(':id/finalizare')
+  finalizare(@Param('id') id: string) {
+    return this.comenziService.finalizare(+id);
+  }
+
+  @Patch(':id/retrimite')
+  retrimite(@Param('id') id: string) {
+    return this.comenziService.retrimite(+id);
+  }
 }
