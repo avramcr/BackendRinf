@@ -63,4 +63,30 @@ export class ComenziService {
       },
     });
   }
+
+  async aprobareManager(id: number) {
+    const comanda = await this.prisma.comanda.findUnique({
+      where: { id },
+    });
+
+    if (!comanda) {
+      throw new Error('Comanda nu exista');
+    }
+
+    if (comanda.categorie === 'ECHIPAMENTE_IT') {
+      return this.prisma.comanda.update({
+        where: { id },
+        data: {
+          status: StatusComanda.APROBARE_IT,
+        },
+      });
+    }
+
+    return this.prisma.comanda.update({
+      where: { id },
+      data: {
+        status: StatusComanda.APROBARE_FINANCIAR,
+      },
+    });
+  }
 }
