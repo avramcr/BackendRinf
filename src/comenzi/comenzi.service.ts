@@ -31,8 +31,8 @@ export class ComenziService {
     });
   }
 
-  findAll() {
-    return `This action returns all comenzi`;
+  async findAll() {
+    return this.prisma.comanda.findMany();
   }
 
   findOne(id: number) {
