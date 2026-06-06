@@ -73,6 +73,10 @@ export class ComenziService {
       throw new Error('Comanda nu exista');
     }
 
+    if (comanda.status !== StatusComanda.APROBARE_MANAGER) {
+      throw new Error('Comanda nu este in etapa de aprobare manager');
+    }
+
     if (comanda.categorie === 'ECHIPAMENTE_IT') {
       return this.prisma.comanda.update({
         where: { id },

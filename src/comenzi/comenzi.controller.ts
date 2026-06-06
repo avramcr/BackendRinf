@@ -49,7 +49,7 @@ export class ComenziController {
     return this.comenziService.respinge(+id, respingeComenziDto.comentariu);
   }
 
-  @Patch(':id/aprobareM')
+  @Patch(':id/aprobare-manager')
   aprobareManager(@Param('id') id: string) {
     return this.comenziService.aprobareManager(+id);
   }
