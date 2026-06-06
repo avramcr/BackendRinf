@@ -27,6 +27,7 @@ export class ComenziService {
         categorie: createComenziDto.categorie,
         suma: createComenziDto.suma,
         status,
+        utilizatorId: createComenziDto.utilizatorId,
       },
     });
   }

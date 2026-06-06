@@ -12,6 +12,8 @@ model Comanda {
   status StatusComanda @default(CREATA)
   dataCrearii DateTime @default(now())
   comentariuRespingere String?
+  utilizatorId Int 
+  utilizator Utilizator @relation(fields: [utilizatorId], references: [id])
 }
 
 model Utilizator {
@@ -21,6 +23,7 @@ model Utilizator {
   parola String
   rol Rol @default(CLIENT)
   dataCrearii DateTime @default(now())
+  comenzi Comanda[]
 }
 
 enum Rol {
