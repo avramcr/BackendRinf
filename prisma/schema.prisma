@@ -22,7 +22,7 @@ model Utilizator {
   email String @unique
   parola String
   rol Rol @default(CLIENT)
-  dataCrearii DateTime @default(now())
+  dataCrearii DateTime @default(now()) 
   comenzi Comanda[]
 }
 

@@ -1,17 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUtilizatoriDto } from './dto/create-utilizatori.dto';
 import { UpdateUtilizatoriDto } from './dto/update-utilizatori.dto';
 import { PrismaClient } from '@prisma/client';
+import { LoginUtilizatoriDto } from './dto/login-utilizatori.dto';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UtilizatoriService {
   private prisma = new PrismaClient();
 
   async create(createUtilizatoriDto: CreateUtilizatoriDto) {
+    const saltRounds = 10;
+
+    const parolaCriptata = await bcrypt.hash(
+      createUtilizatoriDto.parola,
+      saltRounds,
+    );
     return this.prisma.utilizator.create({
       data: {
         nume: createUtilizatoriDto.nume,
         email: createUtilizatoriDto.email,
-        parola: createUtilizatoriDto.parola,
+        parola: parolaCriptata,
       },
     });
   }
@@ -37,5 +45,35 @@ export class UtilizatoriService {
     return this.prisma.utilizator.delete({
       where: { id },
     });
+  }
+
+  async login(loginUtilizatoriDto: LoginUtilizatoriDto) {
+    const utilizator = await this.prisma.utilizator.findUnique({
+      where: {
+        email: loginUtilizatoriDto.email,
+      },
+    });
+
+    if (!utilizator) {
+      throw new UnauthorizedException('Email inexistent.');
+    }
+
+    const parolaCorecta = await bcrypt.compare(
+      loginUtilizatoriDto.parola,
+      utilizator.parola,
+    );
+
+    if (!parolaCorecta) {
+      throw new UnauthorizedException('Parolă incorectă.');
+    }
+
+    return {
+      message: 'Login reușit',
+      utilizator: {
+        id: utilizator.id,
+        nume: utilizator.nume,
+        email: utilizator.email,
+      },
+    };
   }
 }
