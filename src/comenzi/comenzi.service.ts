@@ -89,4 +89,21 @@ export class ComenziService {
       },
     });
   }
+
+  async aprobareIt(id: number) {
+    const comanda = await this.prisma.comanda.findUnique({
+      where: { id },
+    });
+
+    if (!comanda) {
+      throw new Error('Comanda nu exista');
+    }
+
+    return this.prisma.comanda.update({
+      where: { id },
+      data: {
+        status: StatusComanda.APROBARE_FINANCIAR,
+      },
+    });
+  }
 }
