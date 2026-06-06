@@ -11,6 +11,7 @@ model Comanda {
   suma Float
   status StatusComanda @default(CREATA)
   dataCrearii DateTime @default(now())
+  comentariuRespingere String?
 }
 
 model Utilizator {
@@ -20,7 +21,6 @@ model Utilizator {
   parola String
   rol Rol @default(CLIENT)
   dataCrearii DateTime @default(now())
-
 }
 
 enum Rol {
@@ -38,8 +38,7 @@ enum StatusComanda {
   APROBARE_FINANCIAR
   FACTURATA
   FINALIZATA
-  RESPINSA
-
+  NECESITA_RELUCRARE
 }
 
 

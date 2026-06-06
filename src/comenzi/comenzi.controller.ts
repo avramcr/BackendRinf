@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ComenziService } from './comenzi.service';
 import { CreateComenziDto } from './dto/create-comenzi.dto';
 import { UpdateComenziDto } from './dto/update-comenzi.dto';
+import { RespingeComenziDto } from './dto/respinge-comenzi.dto';
 
 @Controller('comenzi')
 export class ComenziController {
@@ -30,5 +39,13 @@ export class ComenziController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.comenziService.remove(+id);
+  }
+
+  @Patch(':id/respingere')
+  respinge(
+    @Param('id') id: string,
+    @Body() respingeComenziDto: RespingeComenziDto,
+  ) {
+    return this.comenziService.respinge(+id, respingeComenziDto.comentariu);
   }
 }
