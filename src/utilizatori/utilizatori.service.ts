@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUtilizatoriDto } from './dto/create-utilizatori.dto';
 import { UpdateUtilizatoriDto } from './dto/update-utilizatori.dto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Rol } from '@prisma/client';
 import { LoginUtilizatoriDto } from './dto/login-utilizatori.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -94,5 +94,18 @@ export class UtilizatoriService {
         rol: utilizator.rol,
       },
     };
+  }
+
+  async updateRol(id: number, rol: Rol) {
+    return this.prisma.utilizator.update({
+      where: { id },
+      data: { rol },
+      select: {
+        id: true,
+        nume: true,
+        email: true,
+        rol: true,
+      },
+    });
   }
 }

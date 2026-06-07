@@ -47,11 +47,6 @@ export class ComenziController {
     return this.comenziService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.comenziService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateComenziDto: UpdateComenziDto) {
     return this.comenziService.update(+id, updateComenziDto);
@@ -70,7 +65,7 @@ export class ComenziController {
     return this.comenziService.respinge(+id, respingeComenziDto.comentariu);
   }
 
-  @Patch(':id/aprobare-manager')
+  @Patch(':id/aprobare-managerComanda')
   aprobareManager(@Param('id') id: string) {
     return this.comenziService.aprobareManager(+id);
   }
@@ -93,5 +88,15 @@ export class ComenziController {
   @Patch(':id/retrimite')
   retrimite(@Param('id') id: string) {
     return this.comenziService.retrimite(+id);
+  }
+
+  @Get('comenziManager')
+  getComenziAprobareManager() {
+    return this.comenziService.getComenziAprobareManager();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.comenziService.findOne(+id);
   }
 }

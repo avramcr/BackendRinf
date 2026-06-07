@@ -198,4 +198,12 @@ export class ComenziService {
       },
     });
   }
+
+  async getComenziAprobareManager() {
+    return this.prisma.comanda.findMany({
+      where: {
+        status: StatusComanda.APROBARE_MANAGER,
+      },
+    });
+  }
 }
