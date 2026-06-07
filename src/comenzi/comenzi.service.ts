@@ -8,7 +8,7 @@ import { PrismaClient, StatusComanda } from '@prisma/client';
 export class ComenziService {
   private prisma = new PrismaClient();
 
-  async create(createComenziDto: CreateComenziDto) {
+  async create(createComenziDto: CreateComenziDto, utilizatorId: number) {
     let status: StatusComanda;
     if (createComenziDto.suma < 100) {
       if (createComenziDto.categorie === 'ECHIPAMENTE_IT') {
@@ -27,7 +27,7 @@ export class ComenziService {
         categorie: createComenziDto.categorie,
         suma: createComenziDto.suma,
         status,
-        utilizatorId: createComenziDto.utilizatorId,
+        utilizatorId: utilizatorId,
       },
     });
   }
@@ -187,6 +187,14 @@ export class ComenziService {
       data: {
         status: statusNou,
         comentariuRespingere: null,
+      },
+    });
+  }
+
+  async getOrderByUtilizatorId(utilizatorId: number) {
+    return this.prisma.comanda.findMany({
+      where: {
+        utilizatorId: utilizatorId,
       },
     });
   }

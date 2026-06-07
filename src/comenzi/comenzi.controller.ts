@@ -11,14 +11,35 @@ import { ComenziService } from './comenzi.service';
 import { CreateComenziDto } from './dto/create-comenzi.dto';
 import { UpdateComenziDto } from './dto/update-comenzi.dto';
 import { RespingeComenziDto } from './dto/respinge-comenzi.dto';
+import { Headers } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('comenzi')
 export class ComenziController {
   constructor(private readonly comenziService: ComenziService) {}
 
+  private jwt = new JwtService({
+    secret: process.env.JWT_SECRET || 'secret_test',
+  });
+
   @Post()
-  create(@Body() createComenziDto: CreateComenziDto) {
-    return this.comenziService.create(createComenziDto);
+  async create(
+    @Body() createComenziDto: CreateComenziDto,
+    @Headers('authorization') authorization: string,
+  ) {
+    const token = authorization.split(' ')[1];
+    const decoded = await this.jwt.verifyAsync(token);
+    return this.comenziService.create(createComenziDto, decoded.sub);
+  }
+
+  @Get('utilizator')
+  async getOrderByUtilizatorId(
+    @Headers('authorization') authorization: string,
+  ) {
+    const token = authorization.split(' ')[1];
+    const decoded = await this.jwt.verifyAsync(token);
+
+    return this.comenziService.getOrderByUtilizatorId(decoded.sub);
   }
 
   @Get()

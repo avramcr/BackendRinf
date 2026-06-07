@@ -23,8 +23,4 @@ export class CreateComenziDto {
   @IsNumber()
   @IsPositive()
   suma!: number;
-
-  @IsNumber()
-  @IsPositive()
-  utilizatorId!: number;
 }
