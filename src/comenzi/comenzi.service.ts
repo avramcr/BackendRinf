@@ -63,7 +63,6 @@ export class ComenziService {
     if (!comanda) {
       throw new Error('Comanda nu exista');
     }
-
     if (
       comanda.status !== StatusComanda.APROBARE_MANAGER &&
       comanda.status !== StatusComanda.APROBARE_IT &&
@@ -219,6 +218,14 @@ export class ComenziService {
     return this.prisma.comanda.findMany({
       where: {
         status: StatusComanda.APROBARE_FINANCIAR,
+      },
+    });
+  }
+
+  async getComenziFacturate() {
+    return this.prisma.comanda.findMany({
+      where: {
+        status: StatusComanda.FACTURATA,
       },
     });
   }

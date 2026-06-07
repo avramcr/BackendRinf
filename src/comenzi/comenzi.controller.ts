@@ -103,6 +103,11 @@ export class ComenziController {
     return this.comenziService.getComenziAprobareFinanciar();
   }
 
+  @Get('/facturate')
+  getComenziFacturate() {
+    return this.comenziService.getComenziFacturate();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.comenziService.findOne(+id);
