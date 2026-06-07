@@ -80,14 +80,12 @@ export class ComenziController {
     return this.comenziService.aprobareFinanciar(+id);
   }
 
-  @Patch(':id/finalizare')
-  finalizare(@Param('id') id: string) {
-    return this.comenziService.finalizare(+id);
-  }
-
   @Patch(':id/retrimite')
-  retrimite(@Param('id') id: string) {
-    return this.comenziService.retrimite(+id);
+  retrimite(
+    @Param('id') id: string,
+    @Body() updateComenziDto: UpdateComenziDto,
+  ) {
+    return this.comenziService.retrimite(+id, updateComenziDto);
   }
 
   @Get('comenziManager')

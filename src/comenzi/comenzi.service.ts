@@ -56,6 +56,22 @@ export class ComenziService {
   }
 
   async respinge(id: number, comentariu: string) {
+    const comanda = await this.prisma.comanda.findUnique({
+      where: { id },
+    });
+
+    if (!comanda) {
+      throw new Error('Comanda nu exista');
+    }
+
+    if (
+      comanda.status !== StatusComanda.APROBARE_MANAGER &&
+      comanda.status !== StatusComanda.APROBARE_IT &&
+      comanda.status !== StatusComanda.APROBARE_FINANCIAR
+    ) {
+      throw new Error('Comanda nu este intr-o etapa de aprobare');
+    }
+
     return this.prisma.comanda.update({
       where: { id },
       data: {
@@ -136,7 +152,7 @@ export class ComenziService {
     });
   }
 
-  async retrimite(id: number) {
+  async retrimite(id: number, updateComenziDto: UpdateComenziDto) {
     const comanda = await this.prisma.comanda.findUnique({
       where: { id },
     });
@@ -151,8 +167,8 @@ export class ComenziService {
 
     let statusNou: StatusComanda;
 
-    if (comanda.suma < 100) {
-      if (comanda.categorie === 'ECHIPAMENTE_IT') {
+    if (updateComenziDto.suma < 100) {
+      if (updateComenziDto.categorie === 'ECHIPAMENTE_IT') {
         statusNou = StatusComanda.APROBARE_IT;
       } else {
         statusNou = StatusComanda.APROBARE_FINANCIAR;
@@ -164,6 +180,10 @@ export class ComenziService {
     return this.prisma.comanda.update({
       where: { id },
       data: {
+        titlu: updateComenziDto.titlu,
+        descriere: updateComenziDto.descriere,
+        categorie: updateComenziDto.categorie,
+        suma: updateComenziDto.suma,
         status: statusNou,
         comentariuRespingere: null,
       },
