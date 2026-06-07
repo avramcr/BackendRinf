@@ -4,9 +4,18 @@ import { UpdateUtilizatoriDto } from './dto/update-utilizatori.dto';
 import { PrismaClient } from '@prisma/client';
 import { LoginUtilizatoriDto } from './dto/login-utilizatori.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { access } from 'fs';
 @Injectable()
 export class UtilizatoriService {
   private prisma = new PrismaClient();
+
+  private jwt = new JwtService({
+    secret: process.env.JWT_SECRET || 'secret_test',
+    signOptions: {
+      expiresIn: '1d',
+    },
+  });
 
   async create(createUtilizatoriDto: CreateUtilizatoriDto) {
     const saltRounds = 10;
@@ -67,12 +76,22 @@ export class UtilizatoriService {
       throw new UnauthorizedException('Parolă incorectă.');
     }
 
+    const payload = {
+      sub: utilizator.id,
+      email: utilizator.email,
+      rol: utilizator.rol,
+    };
+
+    const token = await this.jwt.signAsync(payload);
+
     return {
       message: 'Login reușit',
+      access_token: token,
       utilizator: {
         id: utilizator.id,
         nume: utilizator.nume,
         email: utilizator.email,
+        rol: utilizator.rol,
       },
     };
   }
