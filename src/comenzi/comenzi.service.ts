@@ -206,4 +206,13 @@ export class ComenziService {
       },
     });
   }
+
+  async getComenziAprobareIt() {
+    return this.prisma.comanda.findMany({
+      where: {
+        status: StatusComanda.APROBARE_IT,
+        categorie: 'ECHIPAMENTE_IT',
+      },
+    });
+  }
 }

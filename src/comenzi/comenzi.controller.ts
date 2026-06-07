@@ -70,7 +70,7 @@ export class ComenziController {
     return this.comenziService.aprobareManager(+id);
   }
 
-  @Patch(':id/aprobareI')
+  @Patch(':id/aprobare-it')
   aprobarIt(@Param('id') id: string) {
     return this.comenziService.aprobareIt(+id);
   }
@@ -93,6 +93,11 @@ export class ComenziController {
   @Get('comenziManager')
   getComenziAprobareManager() {
     return this.comenziService.getComenziAprobareManager();
+  }
+
+  @Get('comenziDepartamentIt')
+  getComenziAprobareIt() {
+    return this.comenziService.getComenziAprobareIt();
   }
 
   @Get(':id')
