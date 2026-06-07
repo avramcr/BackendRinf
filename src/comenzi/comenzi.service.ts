@@ -136,27 +136,6 @@ export class ComenziService {
     });
   }
 
-  async finalizare(id: number) {
-    const comanda = await this.prisma.comanda.findUnique({
-      where: { id },
-    });
-
-    if (!comanda) {
-      throw new Error('Comanda nu exista');
-    }
-
-    if (comanda.status !== StatusComanda.FACTURATA) {
-      throw new Error('Comanda nu este facturata');
-    }
-
-    return this.prisma.comanda.update({
-      where: { id },
-      data: {
-        status: StatusComanda.FINALIZATA,
-      },
-    });
-  }
-
   async retrimite(id: number) {
     const comanda = await this.prisma.comanda.findUnique({
       where: { id },
@@ -212,6 +191,14 @@ export class ComenziService {
       where: {
         status: StatusComanda.APROBARE_IT,
         categorie: 'ECHIPAMENTE_IT',
+      },
+    });
+  }
+
+  async getComenziAprobareFinanciar() {
+    return this.prisma.comanda.findMany({
+      where: {
+        status: StatusComanda.APROBARE_FINANCIAR,
       },
     });
   }

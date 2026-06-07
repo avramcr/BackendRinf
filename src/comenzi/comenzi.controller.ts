@@ -100,6 +100,11 @@ export class ComenziController {
     return this.comenziService.getComenziAprobareIt();
   }
 
+  @Get('comenziDepartamentFinanciar')
+  getComenziAprobareFinanciar() {
+    return this.comenziService.getComenziAprobareFinanciar();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.comenziService.findOne(+id);
