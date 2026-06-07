@@ -1,7 +1,4 @@
 # FusionCart Backend
-
-Backend API pentru **FusionCart**, o platformă de comerț electronic dezvoltată cu **NestJS** și **TypeScript**.
-
 ## Repository
 
 GitHub: [FusionCart Backend Repository](https://github.com/avramcr/BackendRinf)
@@ -26,6 +23,3 @@ npm run start:dev
 * TypeScript
 * Node.js
 
-## Autor
-
-Cristina Elena Avram
