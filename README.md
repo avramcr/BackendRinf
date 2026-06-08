@@ -21,5 +21,5 @@ npm run start:dev
 
 * NestJS
 * TypeScript
-* Node.js
+
 
